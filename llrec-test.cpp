@@ -66,7 +66,15 @@ void dealloc(Node* head)
 //   Add any helper functions or
 //   function object struct declarations
 // -----------------------------------------------
+#include <functional>
 
+struct OddValueRemover {
+    bool operator()(int val) { return val % 2 != 0; }
+};
+
+struct EvenValueRemover {
+    bool operator()(int val) { return val % 2 == 0; }
+};
 
 
 
@@ -86,7 +94,53 @@ int main(int argc, char* argv[])
     print(head);
 
     // Test out your linked list code
-
+    cout << "\n----- Testing llpivot -----" << endl;
+    Node* head_copy = readList(argv[1]);
+    Node* smaller = nullptr;
+    Node* larger = nullptr;
+    int pivot = 10;
+    
+    cout << "Original list for pivot: ";
+    print(head_copy);
+    cout << "Pivot value: " << pivot << endl;
+    
+    llpivot(head_copy, smaller, larger, pivot);
+    
+    cout << "After pivot:" << endl;
+    cout << "Head (should be NULL): ";
+    print(head_copy);
+    cout << "Smaller list (values <= " << pivot << "): ";
+    print(smaller);
+    cout << "Larger list (values > " << pivot << "): ";
+    print(larger);
+    
+    dealloc(smaller);
+    dealloc(larger);
+    
+    cout << "\n----- Testing llfilter with OddValueRemover -----" << endl;
+    Node* filter_test1 = readList(argv[1]);
+    cout << "Original list: ";
+    print(filter_test1);
+    
+    OddValueRemover odd_remover;
+    Node* even_only = llfilter(filter_test1, odd_remover);
+    
+    cout << "After filtering out odd numbers: ";
+    print(even_only);
+    
+    cout << "\n----- Testing llfilter with EvenValueRemover -----" << endl;
+    Node* filter_test2 = readList(argv[1]);
+    cout << "Original list: ";
+    print(filter_test2);
+    
+    EvenValueRemover even_remover;
+    Node* odd_only = llfilter(filter_test2, even_remover);
+    
+    cout << "After filtering out even numbers: ";
+    print(odd_only);
+    
+    dealloc(even_only);
+    dealloc(odd_only);
 
 
     

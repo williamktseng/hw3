@@ -6,6 +6,12 @@
 #include "event.h"
 #include "gate.h"
 
+struct EventLess {
+    bool operator()(Event* lhs, Event* rhs) {
+        return lhs->time < rhs->time;
+    }
+};
+
 class Circuit 
 {
 	public:
@@ -23,7 +29,7 @@ class Circuit
     std::vector<Gate*> m_gates;
     std::vector<Wire*> m_wires;
 		// we need to add the m_pq data member. It should be a min-heap of Event*;
-        
+		Heap<Event*, EventLess> m_pq;
 };
 
 #endif
